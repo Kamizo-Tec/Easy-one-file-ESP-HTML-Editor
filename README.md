@@ -1,14 +1,14 @@
 # Easy-one-file-ESP-HTML-Editor
-Easy ESP HTML‑Editor is a lightweight, fast and fully offline HTML editor that runs directly on your ESP8266 or ESP32. It allows you to edit any file stored in LittleFS/SPIFFS directly from your browser – without reflashing, without external tools, without frameworks , modify your file, hit SAVE, and you're done.
+Easy ESP HTML‑Editor is a lightweight, fast and fully offline HTML editor that runs directly on your ESP8266 or ESP32. 
+It allows you to edit the INDEX.HTML stored in LittleFS/SPIFFS directly from your browser – 
+without reflashing, without external tools, modify your file, hit SAVE, and you're done.
 
 This project is intentionally simple:
 One HTML file. Zero external JavaScript. Zero dependencies. 299 KB total.
 
-Features
+
 ✔ Works on ESP8266 and ESP32
-
 ✔ Only one HTML file (editor.html)
-
 ✔ No external JavaScript, no frameworks, no libraries
 ✔ Fully offline – runs entirely on the ESP
 ✔ Edit any file in LittleFS/SPIFFS
@@ -27,20 +27,20 @@ Most ESP editors are:
 -This project solves all of that with a single file.
 -299 KB. One file. Works everywhere.
 //--------------------------------------------------------
-
+```
 📂 File Structure
 Code
 /data
  ├── editor.html
  ├── index.html
  └── any other files 
- 
+ ```
 Upload the /data folder using your preferred LittleFS/SPIFFS uploader.
 
 **********************************************************
 // ----------- editor.html (One‑File Editor) ----------
 *************************************************************
-
+```
 html
 <!DOCTYPE html>
 <html>
@@ -112,7 +112,7 @@ loadFile();
 
 </body>
 </html>
-
+```
 ****************************************************************
 🛠 ESP Code (Endpoints)
 Add these routes to your ESPAsyncWebServer:
@@ -121,19 +121,20 @@ Add these routes to your ESPAsyncWebServer:
 // -------------------------------------------------------------
 
 // Serve the editor page ------------------------
-
+```
 server.on("/edit", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(LittleFS, "/editor.html", "text/html");
 });
+```
 
 // Load a file from LittleFS ---------------------------
-
+```
 server.on("/load", HTTP_GET, [](AsyncWebServerRequest *request){
     if (!request->hasParam("file")) {
         request->send(400, "text/plain", "file missing");
         return;
     }
-
+    
     String filename = "/" + request->getParam("file")->value();
     File f = LittleFS.open(filename, "r");
 
@@ -147,9 +148,10 @@ server.on("/load", HTTP_GET, [](AsyncWebServerRequest *request){
 
     request->send(200, "text/plain", content);
 });
-
+```
 // Save HTML to LittleFS --------------------------------------
 
+```
 server.on("/save", HTTP_POST,
     [](AsyncWebServerRequest *request){
         Serial.println("POST request received...");
@@ -179,5 +181,5 @@ server.on("/save", HTTP_POST,
     }
 );
 
-
+```
 thats all , enjoy 
